@@ -15,7 +15,14 @@ public class ReportFormController {
 
     @FXML
     void ItemReportButtonOnAction(ActionEvent event) {
-
+        try {
+            JasperDesign design = JRXmlLoader.load("src/main/resources/reports/itemReport.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(design);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+            JasperViewer.viewReport(jasperPrint,false);
+        } catch (JRException | ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
